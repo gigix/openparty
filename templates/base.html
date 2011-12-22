@@ -57,9 +57,11 @@
                     <li><a {%  if tab == "index" %}class="active"{%  endif %}  href="/">首页</a></li>
                     <li><a {%  if tab == "event" %}class="active"{%  endif %}  href="{% url event_list %}">活动</a></li>
                     <li><a {%  if tab == "topic" %}class="active"{%  endif %}  href="{% url topic_list %}">话题</a></li>
+                <!--
                     <li><a {%  if tab == "post" %}class="active"{%  endif %}  href="{% url list_post %}">新闻</a></li>
                     <li><a {%  if tab == "tweet" %}class="active"{%  endif %}  href="/tweets">Tweet</a></li>
                     <li><a {%  if tab == "blog" %}class="active"{%  endif %}  href="http://blog.beijing-open-party.org">Blog</a></li>
+                -->
                     <li><a {%  if tab == "about" %}class="active"{%  endif %}  href="{% url about %}">关于</a></li>
                 </ul>
                 <div class="clear">
@@ -73,14 +75,14 @@
         <div id="footer" class="container_12">
             <div class="grid_12">
                 <p>
-                    &copy; 2010 www.beijing-open-party.org
+                    &copy; 2012 www.chengdu-open-party.org
                     <br/>
                     Powered by <a href="http://djangoproject.com" target="_blank">Django</a>
                     + <a href="http://www.github.com/openparty/openparty" target="_blank">OpenParty app</a>
                 </p>
                 <ul class="links">
                     <li>
-                        <a href="mailto:dev@beijing-open-party.org">Contact</a>
+                        <a href="mailto:staff@chengdu-open-party.org">Contact</a>
                     </li>
                     <li>
                         <a href="/feed/post">RSS Feed</a>
