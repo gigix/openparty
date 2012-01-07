@@ -32,8 +32,8 @@ class NullEvent(object):
     end_time    = u'未定'
     description = u'本次活动正在计划中'
     content     = u'本次活动正在计划中'
-    address     = u'东直门国华投资大厦11层'
-    poster      = '/media/upload/null-event-1.jpg'
+    address     = u'奇诺咖啡厅（天府软件园A9）'
+    poster      = '/media/upload/null-event-cd.jpg'
     participants = set()
     
     css_class   = 'inactive'
