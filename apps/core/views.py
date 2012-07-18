@@ -208,8 +208,9 @@ def submit_topic(request):
         form = ArticleForm(request.POST)
         topic = form.save(commit=False)
         topic.set_author(request.user)
-        topic.save()
-        topic.send_notification_mail('created')
+        if topic.is_valid():
+            topic.save()
+            topic.send_notification_mail('created')
         
         context = {
             'form': form,
