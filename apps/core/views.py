@@ -31,7 +31,7 @@ def index(request):
         'event_list': event_list,
         'topic_list': topic_list,
         'post_list': post_list,
-        'next_event': next_event, 
+        'next_event': next_event,
         'tab': 'index',
     }
     return render_to_response('core/index.html', ctx, context_instance=RequestContext(request))
@@ -39,7 +39,7 @@ def index(request):
 def event_list(request):
     event_list = Event.objects.all().order_by('-begin_time')
     topic_list = Topic.objects.all().order_by('-total_votes')
-    
+
     ctx = {
         'event_list': event_list,
         'topic_list': topic_list,
@@ -55,7 +55,7 @@ def topic_list(request):
         page_num = int(request.GET.get('page', '1'))
     except ValueError:
         page_num = 1
-    
+
     try:
         page = paginator.page(page_num)
     except (EmptyPage, InvalidPage):
@@ -86,12 +86,12 @@ def join_event(request):
             this_user = request.user.get_profile()
         except:
             return redirect(reverse('signup'))
-        
+
         next_event = Event.objects.next_event()
         if this_user in next_event.participants.all():
             messages.success(request, u'感谢您的参与，您已经成功报名参加了 %s 活动 - 点击<a href="/event/%s">查看活动详情</a>' % (next_event.name, next_event.id))
             return redirect('/event/%s' % (next_event.id))
-        else: 
+        else:
             form = ProfileForm(request.user)
             next_event = Event.objects.next_event()
 
@@ -124,7 +124,7 @@ def checkin(request):
 def event(request, id):
     this_event = get_object_or_404(Event, pk = id)
     topics_shown_in = this_event.topic_shown_in.filter(accepted=True)
-    
+
     ctx = {
         'this_event': this_event,
         'topics_shown_in': topics_shown_in,
@@ -169,7 +169,7 @@ def votes_for_topic(request, id):
 def vote(request, id):
 
     this_topic = Topic.objects.get(pk=id)
-    
+
     is_voted = False
     try:
         vote_thistopic = this_topic.votes.get(user=request.user.get_profile())
@@ -188,7 +188,7 @@ def vote(request, id):
 
     #update vote count
     this_topic.save()
-    
+
     return HttpResponseRedirect(reverse(topic, args=[this_topic.id]))
 
 @login_required
@@ -205,19 +205,20 @@ def submit_topic(request):
                                     context_instance=RequestContext(request))
 
     if request.method == 'POST':
-        form = ArticleForm(request.POST)
-        topic = form.save(commit=False)
-        topic.set_author(request.user)
-        if topic.is_valid():
-            topic.save()
-            topic.send_notification_mail('created')
-        
-        context = {
-            'form': form,
-            'topic': topic,
-            'save_success': True
-        }
-        
+        if request.method == 'POST':
+            form = ArticleForm(request.POST)
+            context = {}
+            if form.is_valid():
+                topic = form.save(commit=False)
+                topic.set_author(request.user)
+                topic.save()
+                context['topic'] = topic
+                context['save_success'] = True
+                topic.send_notification_mail('created')
+            else:
+                context['save_success'] = False
+
+            context['form'] = form
         return render_to_response('core/submit_topic.html',
                                     context,
                                     context_instance=RequestContext(request))
@@ -234,7 +235,7 @@ def edit_topic(request, id):
                     'topic': this_topic,
                     'tab': 'topic',
                   }
-        return render_to_response('core/edit_topic.html', 
+        return render_to_response('core/edit_topic.html',
                                     context,
                                     context_instance=RequestContext(request))
 
@@ -251,7 +252,7 @@ def edit_topic(request, id):
             'edit_success': True,
             'tab': 'topic',
         }
-        
+
         return render_to_response('core/edit_topic.html',
                                     context,
                                     context_instance=RequestContext(request))
@@ -264,7 +265,7 @@ def list_post(request):
         page_num = int(request.GET.get('page', '1'))
     except ValueError:
         page_num = 1
-    
+
     try:
         page = paginator.page(page_num)
     except (EmptyPage, InvalidPage):
